@@ -29,17 +29,19 @@ namespace DataAccessLayer
             }
         }
 
-        private static string GetPassword()
+        #nullable enable
+        public static string GetPassword(string? pathToPw)
         {
-            var en = File.ReadLines(pathToPwfile).GetEnumerator();
+            var en = File.ReadLines(pathToPw == null ? pathToPwfile : pathToPw).GetEnumerator();
             en.MoveNext();
             return en.Current;
         }
+        #nullable disable
 
         // usage example 
         private static int Main(string[] args)
         {
-            string connectionString = $"server={url};uid={uid};pwd={GetPassword()};database={dbName}";
+            string connectionString = $"server={url};uid={uid};pwd={GetPassword(null)};database={dbName}";
 
             using (var context = new ShopContext(connectionString))
             {
